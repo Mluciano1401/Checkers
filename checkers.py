@@ -21,5 +21,6 @@ class Board(object):
 
 
 
+
 board = Board()
 print(board.matrix)
