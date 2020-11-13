@@ -14,33 +14,34 @@ class Board(object):
     def update_board(self):
         pass
 
-class CharacterToken(object):
-    def __init__(self,name,simbol):
+
+class Token(object):
+    def __init__(self,name,simbol,value,Queen = False):
         self.name = name
         self.simbol = simbol
-
-class Token(CharacterToken):
-    def __init__(self,name,simbol,value,Queen = False):
-        CharacterToken.__init__(self,name,simbol)
         self.value = value
         if Queen == True:
             self.value = 2
 
-    def positioninboard(self):  
-        pass      
 
 class Player(object):
-    def __init__(self,name,points,cantToken):
+    def __init__(self,name,points,canttokens):
         self.name = name
         self.points = points
-        self.cantToken = cantToken
+        self.canttokens = canttokens
+
+        
+        
+    
 
 
 
-
-token1 = Token("white","0",1,Queen = False)
-token2 = Token("Black","O",1,Queen = False)
-player1 = Player('jugador1',0,12)
 board = Board()
 print(board.matrix)
-print(player1.points)
+token1 = Token("white","0",1,Queen = False)
+token2 = Token("Black","O",1,Queen = False)
+
+player1 = Player('Jugador1',0,12)
+player2 = Player('Jugador2',0,12)
+print(player1.__dict__)
+print(token1.__dict__)
