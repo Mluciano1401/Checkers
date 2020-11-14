@@ -22,6 +22,7 @@ class Token(object):
         self.Queen = Queen
         if Queen == True:
             self.value = 2
+            self.simbol = 'Q'
            
 class Token_Initialposition(Token):
     def __init__(self,name,simbol,value,Queen,matrix):
@@ -55,8 +56,9 @@ token2 = Token("Black","O",1,False)
 player1 = Player('Jugador1',0,12)
 player2 = Player('Jugador2',0,12)
 boardinitial = Token_Initialposition("Black","O",1, False,board.matrix)
-boardinitial1 = Token_Initialposition("White","0",1, False,board.matrix)
-print(boardinitial1.matrix)
+boardinitial = Token_Initialposition("White","0",1, False,board.matrix)
+for e in boardinitial.matrix:
+    print(e)
 print(player1.__dict__)
 print(token1.__dict__)
 
