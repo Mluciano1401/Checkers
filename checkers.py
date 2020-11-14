@@ -22,5 +22,14 @@ class Board(object):
 
 
 
+
+
+
+
+
+
+
+
 board = Board()
-print(board.matrix)
+for e in board.matrix:
+    print(e)
