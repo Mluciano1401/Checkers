@@ -13,48 +13,52 @@ class Board(object):
 
     def update_board(self):
         pass
-         
+ 
 class Player(object):
-    def __init__(self,name,points,token,canttokens):
+    def __init__(self,name,points,canttokens):
         self.name = name
-        self.points =points
-        self.token = token
+        self.points = points
         self.canttokens = canttokens
-       
+    
+ 
+
 class Token(object):
-    def __init__(self,simbol,value,Queen):
+    def __init__(self,name,simbol,value,Queen):
+        self.name = name
         self.simbol = simbol
         self.value = value
         self.Queen = Queen
         if Queen == True:
             self.value = 2
+            self.simbol = 'Q'
+
            
 class Token_Initialposition(Token):
-    def __init__(self,token,canttokens,matrix):
+    
+    token1 = Token("white","0",1,False)
+    token2 = Token("Black","O",1,False)
+    def __init__(self,name,simbol,value,Queen,matrix):
+        Token.__init__(self,name,simbol,value,Queen = False)
         self.matrix = matrix
-        self.token = token
-        self.canttokens = canttokens
-        if self.token == "Black":
+        if self.name == "Black":
             for x in range(0,8):
                 for y in range(0,3):
                     if ' ' == matrix[y][x]:
-                         matrix[y][x] = 'O'
-        if self.token == "White":
+                        matrix[y][x] = self.simbol 
+        if self.name == "White":
             for x in range(0,8):
                 for y in range(5,8): 
-                    if ' ' == matrix[y][x]:                     
-                        matrix[y][x] = '0'
-                        
+                    if ' ' == matrix[y][x]:
+                        matrix[y][x] = self.simbol
 
 
 board = Board()
-player1 = Player('Player1',0,"white",12)
-player2 = Player('Player2',0,"Black",12)
-
-
-boardinitial = Token_Initialposition("white",12,board.matrix)
-boardinitial = Token_Initialposition("Black",12,board.matrix)
+player1 = Player('Player1',0,12)
+player2 = Player('Player2',0,12)
+boardinitial = Token_Initialposition("Black","O",1, False,board.matrix)
+boardinitial = Token_Initialposition("White","0",1, False,board.matrix)
 for e in boardinitial.matrix:
-    print(e)
+    print(e) 
 print(player1.__dict__)
+print(player2.__dict__)
 
