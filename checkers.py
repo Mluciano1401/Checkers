@@ -10,8 +10,7 @@ class Board(object):
             ['x',' ','x',' ','x',' ','x',' '],
             [' ','x',' ','x',' ','x',' ','x']]
 
-
-    def update_board(self):
+   def update_board(self):
         pass
 
 class Player(object):
@@ -37,7 +36,7 @@ class Token(object):
             self.simbol = 'Q' 
         Token.numtokens +=  1
 
-   
+
 
 class Gameplayfeatures(object):
     def __init__(self):
@@ -148,3 +147,5 @@ boardinitial = Gameplayfeatures.Token_Initialposition(player1,board.matrix)
 boardinitial = Gameplayfeatures.Token_Initialposition(player2,board.matrix)    
 players = [player1,player2]
 rotatingshifts(players,boardinitial)
+
+ 
