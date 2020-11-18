@@ -49,7 +49,7 @@ class Gameplayfeatures(object):
         token = []
         if player.colortoken == "Black":
             for i in range(0,player.canttokens):
-                    token.append(Token("Black","O",1,False))
+                    token.append(Token("Black","B",1,False))
                     for e in token:
                         for x in range(0,8):
                             for y in range(0,3):
@@ -59,7 +59,7 @@ class Gameplayfeatures(object):
 
         if player.colortoken == "White":
             for i in range(0,player.canttokens):
-                token.append(Token("White","0",1,False))
+                token.append(Token("White","W",1,False))
                 for e in token:
                     for x in range(0,8):
                         for y in range(5,8): 
@@ -70,9 +70,10 @@ class Gameplayfeatures(object):
 
     @staticmethod 
     def space_blank(player,matrix):
-        newpositiontokens = []
+        
         availabletoken = {}
         for e in player.positiontokens:
+            newpositiontokens = []
             y= e[0]
             x= e[1]
             if x < 7 and y < 7 and x > 0 and y > 0:
@@ -94,16 +95,24 @@ class Gameplayfeatures(object):
                     if matrix[y - 1][x - 1] == ' ':
                         newpositiontokens.append([y - 1, x - 1]) 
                         availabletoken[v] =  newpositiontokens        
-        player.positiontokens = availabletoken    
+        player.positiontokens = availabletoken  
+
     @staticmethod                 
     def movetoken(player,matrix):
+        movetoken = input('select the token: (example -> 0,1) ')
+        i,j = movetoken
+        matrix[i][j] = ' '
+        c = [i,j]
+        z = str(c)
+        if z in player.positiontokens:
+            print(player.positiontokens[z])
         coordinates = input('insert the coordinates: (example -> 0,1) ')
         y,x = coordinates
         if player.colortoken == "Black":
-            matrix[y][x] = 'O'
+            matrix[y][x] = 'B'
         if player.colortoken == "White":
-            matrix[y][x] = '0'    
-        print(matrix)
+            matrix[y][x] = 'W'    
+        
     
     def winner(self,point):
         if self.point >= 12:
@@ -133,6 +142,9 @@ def rotatingshifts():
     print(player1.__dict__)
     print(player2.__dict__)
     move =  Gameplayfeatures.movetoken(player1,boardinitial)
+    
+    for e in boardinitial:
+        print(e)   
     return
 
 rotatingshifts()
