@@ -15,14 +15,18 @@ class Board(object):
         pass
 
 class Player(object):
-    def __init__(self,name,points,canttokens):
-        self.name = name
+    numplayer = 0
+    def __init__(self,points,canttokens,colortoken,positiontokens):
         self.points = points
         self.canttokens = canttokens
-    
- 
+        self.colortoken = colortoken
+        self.positiontokens = positiontokens
+        Player.numplayer += 1
+        self.name = 'Player' + str(Player.numplayer)
 
 class Token(object):
+    
+    numtokens = 0
     def __init__(self,name,simbol,value,Queen):
         self.name = name
         self.simbol = simbol
@@ -30,38 +34,107 @@ class Token(object):
         self.Queen = Queen
         if Queen == True:
             self.value = 2
-            self.simbol = 'Q'
+            self.simbol = 'Q' 
+        Token.numtokens +=  1
 
-           
-class Token_Initialposition(Token):
+   
+
+class Gameplayfeatures(object):
+    def __init__(self,xposition,yposition):
+        self.xposition = xposition
+        self.yposition = yposition
+
+    @staticmethod              
+    def Token_Initialposition(player,matrix):
+        token = []
+        if player.colortoken == "Black":
+            for i in range(0,player.canttokens):
+                    token.append(Token("Black","O",1,False))
+                    for e in token:
+                        for x in range(0,8):
+                            for y in range(0,3):
+                                if ' ' == matrix[y][x]:
+                                    matrix[y][x] = e.simbol
+                                    player.positiontokens.append([y,x])
+
+        if player.colortoken == "White":
+            for i in range(0,player.canttokens):
+                token.append(Token("White","0",1,False))
+                for e in token:
+                    for x in range(0,8):
+                        for y in range(5,8): 
+                            if ' ' == matrix[y][x]:
+                                matrix[y][x] = e.simbol
+                                player.positiontokens.append([y,x])
+        return matrix
+
+    @staticmethod 
+    def space_blank(player,matrix):
+        newpositiontokens = []
+        availabletoken = []
+        for e in player.positiontokens:
+            y= e[0]
+            x= e[1]
+            if x < 7 and y < 7 and x > 0 and y > 0:
+                if player.colortoken == "Black":
+                    if matrix[y + 1][x + 1] == ' ':
+                        availabletoken.append([y,x])
+                        newpositiontokens.append([y + 1,x + 1])
+                    if matrix[y + 1][x - 1] == ' ':
+                        newpositiontokens.append([y + 1, x - 1])   
+                if player.colortoken == "White":
+                    if matrix[y - 1][x + 1] == ' ':
+                        availabletoken.append([y,x])
+                        newpositiontokens.append([y - 1, x + 1])
+                    if matrix[y - 1][x - 1] == ' ':
+                        newpositiontokens.append([y - 1, x - 1])         
+        player.positiontokens = availabletoken   
+        return newpositiontokens 
+    def winner(self,point):
+        if self.point >= 12:
+            return True
+        else:
+            return False 
+    @staticmethod                 
+    def movetoken(player,matrix):
+        coordinates = input('insert the coordinates: (example -> 0,1) ')
+        y,x = coordinates
+        if player.colortoken == "Black":
+            matrix[y][x] = 'O'
+        if player.colortoken == "White":
+            matrix[y][x] = '0'    
+        print(matrix)
+
+
+    def deletetoken():
+        pass  
+   
     
-    token1 = Token("white","0",1,False)
-    token2 = Token("Black","O",1,False)
-    def __init__(self,name,simbol,value,Queen,matrix):
-        Token.__init__(self,name,simbol,value,Queen = False)
-        self.matrix = matrix
-        if self.name == "Black":
-            for x in range(0,8):
-                for y in range(0,3):
-                    if ' ' == matrix[y][x]:
-                        matrix[y][x] = self.simbol 
-        if self.name == "White":
-            for x in range(0,8):
-                for y in range(5,8): 
-                    if ' ' == matrix[y][x]:
-                        matrix[y][x] = self.simbol
+def rotatingshifts():      
+    board = Board()   
+    player1 = Player(0,12,"Black",[])
+    player2 = Player(0,12,"White",[])
+    boardinitial = Gameplayfeatures.Token_Initialposition(player1,board.matrix)
+    boardinitial = Gameplayfeatures.Token_Initialposition(player2,board.matrix)
 
-class Movement(Token_Initialposition):
-   pass
+    for e in boardinitial:
+        print(e)   
+    print('total tokens on the board -->',Token.numtokens)
+    print(player1.__dict__)
+    print(player2.__dict__)
+    spaceblank = Gameplayfeatures.space_blank(player1,boardinitial)
+    spaceblank = Gameplayfeatures.space_blank(player2,boardinitial)
+    print(player1.__dict__)
+    print(player2.__dict__)
+    move =  Gameplayfeatures.movetoken(player1,boardinitial)
+    return
 
-board = Board()
-player1 = Player('Player1',0,12)
-player2 = Player('Player2',0,12)
-boardinitial = Token_Initialposition("Black","O",1, False,board.matrix)
-boardinitial = Token_Initialposition("White","0",1, False,board.matrix)
-for e in boardinitial.matrix:
-    print(e) 
-print(player1.__dict__)
-print(player2.__dict__)
+rotatingshifts()
 
+
+
+
+
+
+  
 
