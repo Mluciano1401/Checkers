@@ -71,30 +71,30 @@ class Gameplayfeatures(object):
     @staticmethod 
     def space_blank(player,matrix):
         newpositiontokens = []
-        availabletoken = []
+        availabletoken = {}
         for e in player.positiontokens:
             y= e[0]
             x= e[1]
             if x < 7 and y < 7 and x > 0 and y > 0:
                 if player.colortoken == "Black":
                     if matrix[y + 1][x + 1] == ' ':
-                        availabletoken.append([y,x])
+                        z = [y,x]
+                        z = str(z)
                         newpositiontokens.append([y + 1,x + 1])
+                        availabletoken[z] = newpositiontokens
                     if matrix[y + 1][x - 1] == ' ':
-                        newpositiontokens.append([y + 1, x - 1])   
+                        newpositiontokens.append([y + 1, x - 1])
+                        availabletoken[z] =  newpositiontokens   
                 if player.colortoken == "White":
                     if matrix[y - 1][x + 1] == ' ':
-                        availabletoken.append([y,x])
+                        v = [y,x]
+                        v = str(v)
                         newpositiontokens.append([y - 1, x + 1])
+                        availabletoken[v] = newpositiontokens
                     if matrix[y - 1][x - 1] == ' ':
-                        newpositiontokens.append([y - 1, x - 1])         
-        player.positiontokens = availabletoken   
-        return newpositiontokens 
-    def winner(self,point):
-        if self.point >= 12:
-            return True
-        else:
-            return False 
+                        newpositiontokens.append([y - 1, x - 1]) 
+                        availabletoken[v] =  newpositiontokens        
+        player.positiontokens = availabletoken    
     @staticmethod                 
     def movetoken(player,matrix):
         coordinates = input('insert the coordinates: (example -> 0,1) ')
@@ -104,7 +104,13 @@ class Gameplayfeatures(object):
         if player.colortoken == "White":
             matrix[y][x] = '0'    
         print(matrix)
-
+    
+    def winner(self,point):
+        if self.point >= 12:
+            return True
+        else:
+            return False 
+    
 
     def deletetoken():
         pass  
