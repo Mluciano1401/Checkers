@@ -1,6 +1,6 @@
 class Board(object):
     
-    def __init__(self): 
+    def __init__(self,matrix): 
         self.matrix = [['x',' ','x',' ','x',' ','x',' '],
             [' ','x',' ','x',' ','x',' ','x'],
             ['x',' ','x',' ','x',' ','x',' '],
@@ -9,8 +9,7 @@ class Board(object):
             [' ','x',' ','x',' ','x',' ','x'],
             ['x',' ','x',' ','x',' ','x',' '],
             [' ','x',' ','x',' ','x',' ','x']]
-
-   def update_board(self):
+    def update_board(self):
         pass
 
 class Player(object):
@@ -22,6 +21,10 @@ class Player(object):
         self.positiontokens = positiontokens
         Player.numplayer += 1
         self.name = 'Player' + str(Player.numplayer)
+       
+    def availabletokens(self,listposition):   
+        for e in positiontokens:
+            listposition.append(positiontokens[e])
 
 class Token(object):
     
@@ -34,16 +37,18 @@ class Token(object):
         if Queen == True:
             self.value = 2
             self.simbol = 'Q' 
-        Token.numtokens +=  1
+        Token.numtokens +=  1  
 
+def deletetoken(player,matrix):
+        x = space_blank(player,matrix,) 
 
+ 
 
-class Gameplayfeatures(object):
-    def __init__(self):
-        self.xposition = xposition
-        self.yposition = yposition
+class Gameplayfeatures(Token):
+    def __init__(self,matrix):
+      super(Gameplayfeatures, self).__init__(*args, **kwargs)
 
-    @staticmethod              
+    @staticmethod        
     def Token_Initialposition(player,matrix):
         token = []
         if player.colortoken == "Black":
@@ -66,7 +71,6 @@ class Gameplayfeatures(object):
                                 matrix[y][x] = e.simbol
                                 player.positiontokens.append([y,x])
         return matrix
-
     @staticmethod 
     def space_blank(player,matrix,target):
         
@@ -93,59 +97,84 @@ class Gameplayfeatures(object):
                         availabletoken[v] = newpositiontokens
                     if matrix[y - 1][x - 1] == target:
                         newpositiontokens.append([y - 1, x - 1]) 
-                        availabletoken[v] =  newpositiontokens        
+                        availabletoken[v] =  newpositiontokens  
+        if availabletoken == {}:
+            availabletoken = None           
         player.positiontokens = availabletoken  
 
-    @staticmethod                 
+    @staticmethod 
     def movetoken(player,matrix):
-        movetoken = input('select the token: (example -> 0,1) ')
-        i,j = movetoken
-        matrix[i][j] = ' '
-        c = [i,j]
-        z = str(c)
-        if z in player.positiontokens:
-            print('posible movimientos -->', player.positiontokens[z])
-        coordinates = input('insert the coordinates: (example -> 0,1) ')
-        y,x = coordinates
-        if player.colortoken == "Black":
-            matrix[y][x] = 'B'
-        if player.colortoken == "White":
-            matrix[y][x] = 'W'    
-        
+        try:
+            movetoken = input('Write the coordinates of the token you want to move: (example -> 0,1) ')
+            i,j = movetoken
+            c = [i,j]
+            z = str(c)
+            if z in player.positiontokens:
+                matrix[i][j] = ' '
+                print('Possible movements to perform -->', player.positiontokens[z])
+                coordinates = input('Write the coordinates where you want to move the token: (example -> 0,1) ')
+                y,x = coordinates
+                r = [y,x]
+                if r in  player.positiontokens[z]:
+                    if player.colortoken == "Black":
+                        matrix[y][x] = 'B'
+                    if player.colortoken == "White":
+                        matrix[y][x] = 'W'
+                else:
+                    print('esta posicion no esta libre   -1')    
+                    player.points -= 1
+            else:
+                print('esta ficha no esta libre    -1') 
+                player.points -= 1
+        except:
+            print('no se pudo leer sus coordenadas')
+        return matrix                 
+   
     @staticmethod 
     def winner(point):
-        if point >= 12:
+        if point >= 2:
             return True
         else:
             return False 
     
 
-    def deletetoken():
-        pass  
-
     
-def rotatingshifts(players,boardinitial):      
-    while True:
-        for player in players:
-            print('turn of ->', player.name)
-            if Gameplayfeatures.winner(player.points):
-                return "Winner ->", player.name
-                break
-            else:
-                for e in boardinitial:
-                    print(e)   
-                print('total tokens on the board -->',Token.numtokens)
-                spaceblank = Gameplayfeatures.space_blank(player,boardinitial, ' ')
-                print(player.__dict__)
-                move =  Gameplayfeatures.movetoken(player,boardinitial)
-                player.points += 1 
-           
-board = Board()   
+    
+def rotatingshifts(players,boardinitial):
+    msg = ' '   
+    finish = False   
+    while True: 
+        if finish == True:
+            break
+        else:
+            for player in players:
+                if Gameplayfeatures.winner(player.points):
+                    msg = "Winner -> ",player.name
+                    finish = True 
+                    break
+                else:
+                    if player.positiontokens == None:
+                        msg = "Locked",player.name
+                        finish = True 
+                        break
+                    else:
+                        print('turn of ->', player.name)
+                        for e in boardinitial:
+                            print(e)   
+                        print('total tokens on the board -->',Token.numtokens)
+                
+                        spaceblank = Gameplayfeatures.space_blank(player,boardinitial, ' ')
+                        print(player.__dict__)
+                        move =  Gameplayfeatures.movetoken(player,boardinitial)
+                        player.points += 1 
+                        boardinitial = move
+                   
+
+    print(msg)
+board =  Board([]) 
 player1 = Player(0,12,"Black",[])
 player2 = Player(0,12,"White",[])
 boardinitial = Gameplayfeatures.Token_Initialposition(player1,board.matrix)
 boardinitial = Gameplayfeatures.Token_Initialposition(player2,board.matrix)    
 players = [player1,player2]
 rotatingshifts(players,boardinitial)
-
- 
