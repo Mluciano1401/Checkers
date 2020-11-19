@@ -9,9 +9,8 @@ class Board(object):
             [' ','x',' ','x',' ','x',' ','x'],
             ['x',' ','x',' ','x',' ','x',' '],
             [' ','x',' ','x',' ','x',' ','x']]
-    def update_board(self):
-        pass
 
+            
 class Player(object):
     numplayer = 0
     def __init__(self,points,canttokens,colortoken,positiontokens):
@@ -23,9 +22,9 @@ class Player(object):
         self.name = 'Player' + str(Player.numplayer)
        
     def availabletokens(self,listposition):   
-        for e in positiontokens:
-            listposition.append(positiontokens[e])
-
+        for e in self.positiontokens:
+            self.listposition.append(self.positiontokens[e])
+ 
 class Token(object):
     
     numtokens = 0
@@ -39,17 +38,11 @@ class Token(object):
             self.simbol = 'Q' 
         Token.numtokens +=  1  
 
-def deletetoken(player,matrix):
-        x = space_blank(player,matrix,) 
 
- 
-
-class Gameplayfeatures(Token):
-    def __init__(self,matrix):
-      super(Gameplayfeatures, self).__init__(*args, **kwargs)
-
-    @staticmethod        
-    def Token_Initialposition(player,matrix):
+class Gameplayfeatures(object):
+    def __new__(self,player,matrix):
+        self.player = player
+        self.matrix = matrix
         token = []
         if player.colortoken == "Black":
             for i in range(0,player.canttokens):
@@ -71,9 +64,18 @@ class Gameplayfeatures(Token):
                                 matrix[y][x] = e.simbol
                                 player.positiontokens.append([y,x])
         return matrix
-    @staticmethod 
-    def space_blank(player,matrix,target):
-        
+
+    @staticmethod
+    def winner(point):
+        if point >= 2:
+            return True
+        else:
+            return False 
+
+class Movement(Gameplayfeatures):
+    def __new__(self,player,matrix,target):
+        Gameplayfeatures.__new__(self,player,matrix)
+        self.target = target
         availabletoken = {}
         for e in player.positiontokens:
             newpositiontokens = []
@@ -102,41 +104,35 @@ class Gameplayfeatures(Token):
             availabletoken = None           
         player.positiontokens = availabletoken  
 
-    @staticmethod 
-    def movetoken(player,matrix):
+    def movetoken(self):
         try:
             movetoken = input('Write the coordinates of the token you want to move: (example -> 0,1) ')
-            i,j = movetoken
-            c = [i,j]
+            y,x = movetoken
+            c = [y,x]
             z = str(c)
-            if z in player.positiontokens:
-                matrix[i][j] = ' '
-                print('Possible movements to perform -->', player.positiontokens[z])
+            if z in self.player.positiontokens:
+                self.matrix[i][j] = ' '
+                print('Possible movements to perform -->', self.player.positiontokens[z])
                 coordinates = input('Write the coordinates where you want to move the token: (example -> 0,1) ')
                 y,x = coordinates
                 r = [y,x]
-                if r in  player.positiontokens[z]:
-                    if player.colortoken == "Black":
-                        matrix[y][x] = 'B'
-                    if player.colortoken == "White":
-                        matrix[y][x] = 'W'
+                if r in  self.player.positiontokens[z]:
+                    if self.player.colortoken == "Black":
+                        self.matrix[y][x] = 'B'
+                    if self.player.colortoken == "White":
+                        self.matrix[y][x] = 'W'
                 else:
-                    print('esta posicion no esta libre   -1')    
-                    player.points -= 1
+                    print('This position is not free -1')    
+                    self.player.points -= 1
             else:
-                print('esta ficha no esta libre    -1') 
-                player.points -= 1
+                print('This token is not free   -1') 
+                self.player.points -= 1
         except:
-            print('no se pudo leer sus coordenadas')
-        return matrix                 
-   
-    @staticmethod 
-    def winner(point):
-        if point >= 2:
-            return True
-        else:
-            return False 
-    
+            print('Your coordinates could not be read well')
+        return self.matrix                 
+
+class Killtoken(Gameplayfeatures):
+    pass   
 
     
     
@@ -162,19 +158,21 @@ def rotatingshifts(players,boardinitial):
                         for e in boardinitial:
                             print(e)   
                         print('total tokens on the board -->',Token.numtokens)
-                
-                        spaceblank = Gameplayfeatures.space_blank(player,boardinitial, ' ')
+                        target = [' ']
+                        spaceblank = Movement(player,boardinitial,' ')
                         print(player.__dict__)
-                        move =  Gameplayfeatures.movetoken(player,boardinitial)
+                        move =  Movement.movetoken(player,boardinitial)
                         player.points += 1 
                         boardinitial = move
                    
 
     print(msg)
+
 board =  Board([]) 
 player1 = Player(0,12,"Black",[])
 player2 = Player(0,12,"White",[])
-boardinitial = Gameplayfeatures.Token_Initialposition(player1,board.matrix)
-boardinitial = Gameplayfeatures.Token_Initialposition(player2,board.matrix)    
+boardinitial = Gameplayfeatures(player1,board.matrix)
+boardinitial = Gameplayfeatures(player2,board.matrix)    
+
 players = [player1,player2]
 rotatingshifts(players,boardinitial)
