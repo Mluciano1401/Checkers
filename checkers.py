@@ -28,50 +28,26 @@ class Player(object):
         self.opponent = opponent 
         return self.opponent.colortoken[0]  
 
-class Token(object):
-    def __init__(self,name,simbol,value,Queen):
-        self.name = name
-        self.simbol = simbol
-        self.value = value
-        self.Queen = Queen
-
-    def tokensimbol(self):
-        return self.simbol
-  
-    def position(self,y,x):
-        self.y = y
-        self.x = x
 
 class Gameplayfeatures(object):
     def __new__(self,player,matrix):
         self.player = player
         self.matrix = matrix
-        token = []
         if player.colortoken == "Black":
-            for i in range(0,player.canttokens):
-                    nametoken = "Black" + str(i)
-                    token.append(Token(nametoken,player.colortoken[0],1,False))
-                    for e in token:
-                        for x in range(1,9):
-                            for y in range(1,4):
-                                if ' ' == matrix[y][x]:
-                                    e.position(y,x)
-                                    matrix[y][x] = e.tokensimbol()
-                                    player.positiontokens.append([y,x])               
+            for x in range(1,9):
+                for y in range(1,4):
+                    if ' ' == matrix[y][x]:
+                        matrix[y][x] = player.colortoken[0]
+                        player.positiontokens.append([y,x])               
 
         if player.colortoken == "White":
-            for i in range(0,player.canttokens):
-                nametoken = "White" + str(i)
-                token.append(Token(nametoken,player.colortoken[0],1,False))
-                for e in token:
-                    for x in range(1,9):
-                        for y in range(6,10): 
-                            if ' ' == matrix[y][x]:
-                                e.position(y,x)
-                                matrix[y][x] = e.tokensimbol()
-                                player.positiontokens.append([y,x])
+           for x in range(1,9):
+                for y in range(6,10): 
+                    if ' ' == matrix[y][x]:
+                        matrix[y][x] = player.colortoken[0]
+                        player.positiontokens.append([y,x])
                                
-        return [matrix,token]
+        return matrix
 
     @staticmethod
     def winner(player):
@@ -81,7 +57,7 @@ class Gameplayfeatures(object):
             return False 
         
       
-def rotatingshifts(players,boardinitial,tokens):
+def rotatingshifts(players,boardinitial):
     msg = ' '   
     finish = False   
     while finish == False: 
@@ -101,11 +77,11 @@ def rotatingshifts(players,boardinitial,tokens):
                     for e in boardinitial:
                         print(e)   
                     target = [' ']
-                    kill = Movement.killtoken(player,boardinitial,tokens)
+                    kill = Movement.killtoken(player,boardinitial)
                     if kill == True:
                          spaceblank = Movement(player,boardinitial,target)
                     else:
-                        queen = MovementQueen(player,,boardinitial,target)           
+                        queen = MovementQueen(player,boardinitial,target)           
                         spaceblank = Movement(player,boardinitial,target)
                         move =  Movement.move_token(player,boardinitial)
                             
@@ -120,4 +96,4 @@ player2.opponent(player1)
 boardinitial = Gameplayfeatures(player1,board.matrix)
 boardinitial = Gameplayfeatures(player2,board.matrix)   
 players = [player1,player2]
-rotatingshifts(players,boardinitial[0],boardinitial[1])
+rotatingshifts(players,boardinitial)

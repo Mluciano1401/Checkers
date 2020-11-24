@@ -37,7 +37,7 @@ class Movement(object):
             player.availabletokens = None  
 
     @staticmethod
-    def killtoken(player,matrix,token):
+    def killtoken(player,matrix):
          for e in player.positiontokens:
             y= e[0]
             x= e[1]
@@ -103,7 +103,7 @@ class Movement(object):
             i,j = movetoken
             c = [i,j]
             z = str(c)  
-            if c not in player.positiontokens:
+            if c not in player.positiontokens and  matrix[i][j] == ' ':
                 del player.availabletokens[z] 
             else:
                 if z in player.availabletokens:
