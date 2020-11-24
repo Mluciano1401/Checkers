@@ -1,6 +1,6 @@
+from Queen import *
 from Movement import *
-class Board(object):
-    
+class Board(object):    
     def __init__(self,matrix): 
         self.matrix = [['x','1','2','3','4','5','6','7','8','x'],
             ['1','x',' ','x',' ','x',' ','x',' ','1'],
@@ -12,7 +12,6 @@ class Board(object):
             ['7','x',' ','x',' ','x',' ','x',' ','7'],
             ['8',' ','x',' ','x',' ','x',' ','x','8'],
             ['x','1','2','3','4','5','6','7','8','x']]
-
             
 class Player(object):
     numplayer = 0
@@ -28,21 +27,13 @@ class Player(object):
     def opponent(self,opponent):
         self.opponent = opponent 
         return self.opponent.colortoken[0]  
-        
-   
- 
+
 class Token(object):
-    
-    numtokens = 0
     def __init__(self,name,simbol,value,Queen):
         self.name = name
         self.simbol = simbol
         self.value = value
         self.Queen = Queen
-        if Queen == True:
-            self.value = 2
-            self.simbol = 'Q' 
-        Token.numtokens +=  1  
 
     def tokensimbol(self):
         return self.simbol
@@ -50,7 +41,6 @@ class Token(object):
     def position(self,y,x):
         self.y = y
         self.x = x
-
 
 class Gameplayfeatures(object):
     def __new__(self,player,matrix):
@@ -67,8 +57,7 @@ class Gameplayfeatures(object):
                                 if ' ' == matrix[y][x]:
                                     e.position(y,x)
                                     matrix[y][x] = e.tokensimbol()
-                                    player.positiontokens.append([y,x])
-                       
+                                    player.positiontokens.append([y,x])               
 
         if player.colortoken == "White":
             for i in range(0,player.canttokens):
@@ -81,26 +70,16 @@ class Gameplayfeatures(object):
                                 e.position(y,x)
                                 matrix[y][x] = e.tokensimbol()
                                 player.positiontokens.append([y,x])
-        
-
-                                          
-                                
+                               
         return [matrix,token]
 
     @staticmethod
     def winner(player):
-        if player.points >= 12:
+        if player.points >= 12 or player.opponent.canttokens == 0:
             return True
         else:
             return False 
-    @staticmethod          
-    def Queentoken(player,token):
-        for e in token:
-            if  player.colortoken == "White" and [1,range(0,8)] in player.positiontokens:
-                e.Queen = True     
-                     
-            if  player.colortoken == "Black" and [8,range(0,8)] in player.positiontokens:
-                e.Queen = True
+        
       
 def rotatingshifts(players,boardinitial,tokens):
     msg = ' '   
@@ -121,13 +100,12 @@ def rotatingshifts(players,boardinitial,tokens):
                     print('Turn of ->', player.name,'Color:',player.colortoken,'Points: ', player.points,'Tokens on board: ', player.canttokens)
                     for e in boardinitial:
                         print(e)   
-                    print('total tokens on the board -->',Token.numtokens)
                     target = [' ']
-                    kill = Movement.killtoken(player,boardinitial)
+                    kill = Movement.killtoken(player,boardinitial,tokens)
                     if kill == True:
                          spaceblank = Movement(player,boardinitial,target)
                     else:
-                        queen = Gameplayfeatures.Queentoken(player,tokens)                    
+                        queen = MovementQueen(player,,boardinitial,target)           
                         spaceblank = Movement(player,boardinitial,target)
                         move =  Movement.move_token(player,boardinitial)
                             
@@ -143,4 +121,3 @@ boardinitial = Gameplayfeatures(player1,board.matrix)
 boardinitial = Gameplayfeatures(player2,board.matrix)   
 players = [player1,player2]
 rotatingshifts(players,boardinitial[0],boardinitial[1])
->>>>>>> board
