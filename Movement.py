@@ -42,7 +42,7 @@ class Movement(object):
             y= e[0]
             x= e[1]
             if player.colortoken == "Black":
-                if matrix[y + 1][x + 1] == player.opponent.colortoken[0]:
+                if matrix[y + 1][x + 1] == player.opponent.colortoken[0]  or matrix[y + 1][x + 1] =='QW' :
                     if matrix[y + 2][x + 2] == ' ':
                         matrix[y+ 2][x + 2] = player.colortoken[0]
                         player.positiontokens.append([y + 2,x + 2])
@@ -54,7 +54,7 @@ class Movement(object):
                         player.positiontokens.remove([y,x])
                         return True  
 
-                if matrix[y + 1][x - 1] == player.opponent.colortoken[0]:
+                if matrix[y + 1][x - 1] == player.opponent.colortoken[0] or matrix[y + 1][x - 1] =='QW':
                     if matrix[y + 2][x - 2] == ' ':
                         matrix[y+ 2][x - 2] = player.colortoken[0]
                         player.positiontokens.append([y + 2,x - 2])
@@ -67,7 +67,7 @@ class Movement(object):
                         return True  
 
             if player.colortoken == "White":
-                if matrix[y - 1][x + 1] == player.opponent.colortoken[0]:
+                if matrix[y - 1][x + 1] == player.opponent.colortoken[0] or matrix[y - 1][x + 1] =='QB':
                     if matrix[y - 2][x + 2] == ' ':
                         matrix[y- 2][x + 2] = player.colortoken[0]
                         player.positiontokens.append([y - 2,x + 2])
@@ -79,7 +79,7 @@ class Movement(object):
                         player.positiontokens.remove([y,x])
                         return True  
 
-                if matrix[y - 1][x - 1] == player.opponent.colortoken[0]:
+                if matrix[y - 1][x - 1] == player.opponent.colortoken[0]  or matrix[y - 1][x - 1] == 'QB':
                     if matrix[y - 2][x - 2] == ' ':
                         matrix[y- 2][x - 2] = player.colortoken[0]
                         player.positiontokens.append([y - 2,x - 2])
