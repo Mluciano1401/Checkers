@@ -7,11 +7,11 @@ class MovementQueen(object):
             newpositiontokens = []
             y= e[0]
             x= e[1]
-            if player.colortoken == "White" and [y,x] == [1,range(0,8)]:
+            if player.colortoken == "White" and y == 1:
                 matrix[y,x]= 'QW'   
                      
-            if player.colortoken == "Black" and [y,x] == [8,range(0,8)]:
-                matrix[y.x] = 'QB'
+            if player.colortoken == "Black"  and y == 8:
+                matrix[y,x] = 'QB'
             if x < 10 and y < 10 and x > 0 and y > 0:
                     if matrix[y + 1][x + 1] in target:
                         newpositiontokens.append([y + 1,x + 1])

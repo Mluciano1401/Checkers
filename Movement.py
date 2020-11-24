@@ -105,6 +105,7 @@ class Movement(object):
             z = str(c)  
             if c not in player.positiontokens and  matrix[i][j] == ' ':
                 del player.availabletokens[z] 
+                return Movement.move_token(player,matrix)  
             else:
                 if z in player.availabletokens:
                     print('Possible movements to perform -->', player.availabletokens[z])
