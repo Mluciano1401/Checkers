@@ -1,5 +1,6 @@
 from Queen import *
 from Movement import *
+from Player import *
 class Board(object):    
     def __init__(self,matrix): 
         self.matrix = [['x','1','2','3','4','5','6','7','8','x'],
@@ -12,22 +13,6 @@ class Board(object):
             ['7','x',' ','x',' ','x',' ','x',' ','7'],
             ['8',' ','x',' ','x',' ','x',' ','x','8'],
             ['x','1','2','3','4','5','6','7','8','x']]
-            
-class Player(object):
-    numplayer = 0
-    def __init__(self,points,canttokens,colortoken,positiontokens,availabletokens):
-        self.points = points
-        self.canttokens = canttokens
-        self.colortoken = colortoken
-        self.positiontokens = positiontokens
-        self.availabletokens = availabletokens
-        Player.numplayer += 1
-        self.name = 'Player' + str(Player.numplayer)
-
-    def opponent(self,opponent):
-        self.opponent = opponent 
-        return self.opponent.colortoken[0]  
-
 
 class Gameplayfeatures(object):
     def __new__(self,player,matrix):
@@ -74,8 +59,10 @@ def rotatingshifts(players,boardinitial):
                 else:
                     print('\n')
                     print('Turn of ->', player.name,'Color:',player.colortoken,'Points: ', player.points,'Tokens on board: ', player.canttokens)
-                    for e in boardinitial:
-                        print(e)   
+                    print('\n')
+                    for rows in boardinitial:
+                        print(rows)  
+                    print('\n')     
                     target = [' ']
                     kill = Movement.killtoken(player,boardinitial)
                     if kill == True:

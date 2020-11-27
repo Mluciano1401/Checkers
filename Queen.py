@@ -3,10 +3,10 @@ class MovementQueen(object):
         self.player = player
         self.matrix = matrix
         self.target = target
-        for e in player.positiontokens:
+        for coordinates in player.positiontokens:
             newpositiontokens = []
-            y= e[0]
-            x= e[1]
+            y= coordinates[0]
+            x= coordinates[1]
             if player.colortoken == "White" and y == 1:
                 matrix[y,x]= 'QW'   
                      

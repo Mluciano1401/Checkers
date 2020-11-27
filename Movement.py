@@ -3,10 +3,10 @@ class Movement(object):
         self.player = player
         self.matrix = matrix
         self.target = target
-        for e in player.positiontokens:
+        for coordinates in player.positiontokens:
             newpositiontokens = []
-            y= e[0]
-            x= e[1]
+            y= coordinates[0]
+            x= coordinates[1]
           
             if x < 10 and y < 10 and x > 0 and y > 0:
                 if player.colortoken == "Black":
